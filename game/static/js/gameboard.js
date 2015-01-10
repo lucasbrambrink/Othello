@@ -59,10 +59,8 @@ function buildBoard(board) {
                         board = data['board']
                         $('.board').empty();
                         buildBoard(board)
-
-                        if (color == 'W') { color = 'B'} else { color = 'W'}
+                        // if (color == 'W') { color = 'B'} else { color = 'W'}
                     }
-
                 },
                 error: function (xhr, errmsg, err) {
                     alert("error");

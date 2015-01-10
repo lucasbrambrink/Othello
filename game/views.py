@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.views.generic.base import View
-from game.othello import Gameboard
+from game.othello import *
 from django.http import JsonResponse
 import json
 # Create your views here.
@@ -28,7 +28,14 @@ class BoardControl(View):
 		print(board,move)
 		if not g.test_legality(*move):
 			return JsonResponse({'e': 'illegal', 'board': g.board})
+		print(move)
 		g.place(*move)
+		g._print()
+		ai_color = 'W' if move[-1] == 'B' else 'B'
+		ai = AI(g,ai_color)
+		ai_move = ai.take_turn()
+		print(ai_move)
+		g.place(*ai_move)
 		g._print()
 		return JsonResponse({'board': g.board})
 	
