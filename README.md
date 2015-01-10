@@ -1,0 +1,2 @@
+# Othello
+Strategic board game
