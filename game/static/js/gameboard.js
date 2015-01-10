@@ -2,15 +2,30 @@ token = document.getElementsByName('csrfmiddlewaretoken')[0].value
 board = []
 color = 'W'
 
+
 $(document).ready(function(){
 
+function buildBoard(board) {
+    for(var i = 0; i < board.length; i++){
+        var row = "<div class='row' id='row-"+ i +"'></div>"
+        $('.board').append(row)
+        for(var j = 0; j < board[0].length; j++){
+            var cell = "<div class='cell col-xs-1' id='row-" + i + ",col-"+ j +"'>"
+            if(board[i][j] == "W" || board[i][j] == "B"){
+                var piece = "<div class='piece " + board[i][j] + "'></div>"
+                cell += piece
+            }
+            $('#row-'+i).append(cell+'</div>')        
+        }
+    }
+};
 
     $.ajax({
             url: 'game/board/',
             type: "GET",
             success: function (data) {
-                console.log(data['board'])
                 board = data['board']
+                buildBoard(board)
             },
             error: function (xhr, errmsg, err) {
                 alert("error");
@@ -21,9 +36,11 @@ $(document).ready(function(){
 
 
     console.log(token)
-    $('.cell').on('click', function(){
-        var row = $(this).parent().attr('id').split('-')[1];
-        var col = $(this).attr('id').split('-')[1];
+    $('.board').on('click','.cell', function(){
+        var id = $(this).attr('id').split(',');
+        var row = id[0].split('-')[1];
+        var col = id[1].split('-')[1];
+
         var link = "/game/place/";
 
         $.ajax({
@@ -40,17 +57,10 @@ $(document).ready(function(){
                     }
                     else {
                         board = data['board']
-                        for(var i = 0; i < board.length; i++){
-                            for(var j = 0; j < board[0].length; j++){
-                                if(board[i][j] == "W"){
-                                    // DOM change
-                                } else if(board[i][j] == "B"){
-                                    // DOM
-                                } else {
-                                    continue
-                                }
-                            }
-                        }
+                        $('.board').empty();
+                        buildBoard(board)
+
+                        if (color == 'W') { color = 'B'} else { color = 'W'}
                     }
 
                 },

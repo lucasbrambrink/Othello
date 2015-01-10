@@ -25,7 +25,6 @@ class BoardControl(View):
 		board = json.loads(request.POST['board'])
 		g = Gameboard()
 		g.import_board(board)
-		print('after import',g.board)
 		print(board,move)
 		if not g.test_legality(*move):
 			return JsonResponse({'e': 'illegal', 'board': g.board})
