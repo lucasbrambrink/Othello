@@ -1,0 +1,25 @@
+.row {
+    height: 90px;
+    width: 100%;
+}
+
+.cell {
+    padding: 0px;
+    border: 1px solid black;
+    height: 100%;
+    display: inline;
+}
+
+.piece {
+    height: 100%;
+    width: 100%;
+    border-radius: 100%;
+}
+
+.B {
+    background-color: black;
+}
+
+.W {
+    background-color: blue;
+}

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{% static 'css/gameboard.css' %}"> 
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<div class='container'>
+   <h1>Othello</h1>
+   <div class='board'>
+      {% for row in board %}
+   	<div class='row' id='row-{{forloop.counter0}}'>
+   		{% for cell in row %}
+   		<div class='cell col-xs-1' id='col-{{forloop.counter0}}'>
+            {% if cell == 'W' or cell == 'B' %}
+            <div class='piece {{cell}}'></div>
+            {% endif %}
+         </div>
+   		{% endfor %}
+   	</div>
+   	{% endfor %}
+   </div>
+   <hr>
+   <h3>Thanks for playing</h3>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/gameboard.js' %}"></script>
+{% endblock %}
+
