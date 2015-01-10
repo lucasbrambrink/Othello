@@ -11,7 +11,6 @@ $(document).ready(function(){
             success: function (data) {
                 console.log(data['board'])
                 board = data['board']
-
             },
             error: function (xhr, errmsg, err) {
                 alert("error");
@@ -40,8 +39,18 @@ $(document).ready(function(){
                         alert(data['e'])
                     }
                     else {
-                        console.log(data['board'])
-                        console.log('hello')
+                        board = data['board']
+                        for(var i = 0; i < board.length; i++){
+                            for(var j = 0; j < board[0].length; j++){
+                                if(board[i][j] == "W"){
+                                    // DOM change
+                                } else if(board[i][j] == "B"){
+                                    // DOM
+                                } else {
+                                    continue
+                                }
+                            }
+                        }
                     }
 
                 },
