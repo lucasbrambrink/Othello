@@ -99,7 +99,6 @@ $(document).ready(function(){
                 board = data['board']
                 buildBoard(board,[])
                 buildScoreBoard(data['highscores'])
-                endGame(board)
             },
             error: function (xhr, errmsg, err) {
                 alert("error");
