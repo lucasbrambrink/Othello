@@ -33,15 +33,27 @@
                   <tr id='final_score_row' class='col-md-12 final_score'></tr>
                </table>
             <div class='score_buttons'>
-               <button id='save' class="btn btn-success btn-lg end_button">Save</button>
-               <button id='okay' class="btn btn-danger btn-lg end_button">Play Again</button>
+               <button id='save' class="btn btn-primary btn-lg end_button">Save</button>
+               <button id='okay' class="btn btn-danger btn-lg end_button reset_button">Play Again</button>
             </div>
+         </div>
+         <div id='name_form'>
+            <form class='form form-inline' id='form_user_name'>
+               <div class="form-group">
+                  <label for="name" style='margin-right: 1em;'>Name</label>
+                  <input type="name" name='name' class="form-control" id="name" placeholder="Enter Name">
+               </div>
+               <button type="submit" style='margin-left: 1em;' class="btn btn-success">Save</button>
+            </form>
          </div>
       </div>
 
-      <div class='keep_score'></div>
+      <div class='keep_score col-md-8'>
+         <table class='table table-striped' id='high_scores'>
+         </table>
+      </div>
       <div class='reset'>
-         <button id='reset' class="btn btn-danger btn-lg">Reset</button>
+         <button id='reset_button_fixed' class="btn btn-danger btn-lg reset_button">Reset</button>
       </div>
    </div>
 </div>

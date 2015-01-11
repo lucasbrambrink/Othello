@@ -11,12 +11,13 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Game',
+            name='Users',
             fields=[
                 ('id', models.AutoField(primary_key=True, auto_created=True, verbose_name='ID', serialize=False)),
                 ('name', models.CharField(max_length=10)),
-                ('score', models.IntegerField()),
-                ('played_at', models.DateTimeField(auto_now_add=True)),
+                ('wins', models.IntegerField()),
+                ('losses', models.IntegerField()),
+                ('ties', models.IntegerField()),
             ],
             options={
             },

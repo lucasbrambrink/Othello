@@ -2,8 +2,9 @@ from django.db import models
 
 # Create your models here.
 
-class Game(models.Model):
+class Users(models.Model):
 	name = models.CharField(max_length=10)
-	score = models.IntegerField()
-	played_at = models.DateTimeField(auto_now_add=True)
+	wins = models.IntegerField()
+	losses = models.IntegerField()
+	ties = models.IntegerField()
 

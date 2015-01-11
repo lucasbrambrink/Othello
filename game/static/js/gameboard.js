@@ -3,10 +3,14 @@ board = []
 color = 'W'
 
 
-$(document).ready(function(){
 
-    $('.alerts').hide();
-    $('.game_over').hide();
+function buildScoreBoard(highscores) {
+    $('#high_scores').empty().append('<tr><td><strong>Name</strong></td><td><strong>W</strong></td><td><strong>L</strong></td><td><strong>T</strong></td></tr>')   
+    for(var i = 0; i < highscores.length; i++){
+        var score = '<tr><td>'+highscores[i]['name']+'</td><td>'+highscores[i]['wins']+'</td><td>'+highscores[i]['losses']+'</td><td>'+highscores[i]['ties']+'</td></tr>'
+        $('#high_scores').append(score)
+    }
+}
 
 function checkScore(board) {
     var white = 0
@@ -30,12 +34,14 @@ function endGame(board) {
     } else {
         outcome = 'You lost'
     }
+    $('#final_result').empty();
     $('#final_result').append("<h2> :: "+outcome+" :: </h2>")
     $('.board').css('opacity','0.3');
     $('#final_score_row').empty()
         .append("<td style='width:4em;'><h4>Blue</h4></td><td style='width:3em;'><h3><strong>"+score[0]+"</strong></h3></td>")
         .append("<td><h3>||</h3></td>")
         .append("<td style='width:5em;'><h4>Black</h4></td><td style='width:3em;'><h3><strong>"+score[1]+"</strong></h3></td>")
+    $('#name_form').hide();
     $('.game_over').fadeIn(600);
 
 }
@@ -80,12 +86,20 @@ function buildBoard(board,moves) {
         .css('background-color',styles[1])
 };
 
+
+$(document).ready(function(){
+
+    $('.alerts').hide();
+    $('.game_over').hide();
+    
     $.ajax({
             url: 'game/board/',
             type: "GET",
             success: function (data) {
                 board = data['board']
                 buildBoard(board,[])
+                buildScoreBoard(data['highscores'])
+                endGame(board)
             },
             error: function (xhr, errmsg, err) {
                 alert("error");
@@ -155,7 +169,7 @@ function buildBoard(board,moves) {
             },'json');
     })
 
-    $("#reset").on('click', function(){
+    $(".reset_button").on('click', function(){
         
         $.ajax({
                 url: 'game/board/',
@@ -164,11 +178,47 @@ function buildBoard(board,moves) {
                     board = data['board']
                     buildBoard(board,[])
                     $('.game_over').hide();
+                    $('.board').css('opacity','1')
                 },
                 error: function (xhr, errmsg, err) {
                     alert("error");
                 }
             },'json');
+
+    })
+
+    $("#save").on('click', function(){
+        $('#name_form').fadeIn(300);
+        var score = checkScore(board)
+        if(score[0] > score[1]){
+            var points = [1,0,0]
+        } else if (score[0] < score[1]){
+            var points = [0,1,0]
+        } else { var points = [0,0,1] }
+
+        $("#form_user_name").on('submit', function(e){
+            e.preventDefault();
+        
+            $.ajax({
+                    url: '/game/save/',
+                    type: "POST",
+                    data: {
+                        csrfmiddlewaretoken: token,
+                        name: $(this).serialize(),
+                        score: JSON.stringify(points)
+                    },
+                    success: function (data) {
+                        board = data['board']
+                        buildBoard(board,[])
+                        buildScoreBoard(data['highscores'])
+                        $('.game_over').hide();
+                        $('.board').css('opacity','1')
+                    },
+                    error: function (xhr, errmsg, err) {
+                        alert("error");
+                    }
+                },'json');
+        })
 
     })
 });

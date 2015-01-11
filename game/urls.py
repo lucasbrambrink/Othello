@@ -7,4 +7,5 @@ urlpatterns = patterns('',
 	url(r'^place/', BoardControl.as_view(), name='place'),
 	url(r'^board/', BoardControl.as_view(), name='board'),
 	url(r'^find-moves/', ShowMoves.as_view(), name='moves'),
+	url(r'^save/', SaveControl.as_view(), name='save'),
 )
