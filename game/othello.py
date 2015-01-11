@@ -127,20 +127,3 @@ class AI:
 		return sorted(scenarios,key=lambda x: x['human_score'],reverse=True)
 
 
-
-g = Gameboard()
-# # g.place(3,2,'B')
-# # g.place(2,2,'W')
-# ai = AI(g,'W')
-# # print(ai.forecast_best_move(g.board))
-# ai_move = ai.take_turn()
-# print(ai_move)
-# print('board')
-# g._print()
-# new_g = Gameboard()
-# new_g.import_board(g.board)
-# new_g.place(*ai_move)
-# new_g._print()
-# # print(ai.take_turn())
-print(g.find_legal_moves('W'))
-
