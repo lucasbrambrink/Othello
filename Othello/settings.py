@@ -30,8 +30,10 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [*]
 
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 
@@ -57,22 +59,31 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'Othello.urls'
 
+LOGIN_REDIRECT_URL = ''
+
+
 WSGI_APPLICATION = 'Othello.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
+import dj_database_url
+
 DATABASES = {
-    'default': {  
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',  
-        'NAME': 'othello',  
-        'USER': 'lb',  
-        'PASSWORD': 'Jackson',  
-        'HOST': '127.0.0.1',  
-        'PORT': '5432',  
-        }  
-}  
+    'default': dj_database_url.config()
+}
+*
+# DATABASES = {
+#     'default': {  
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',  
+#         'NAME': 'othello',  
+#         'USER': 'lb',  
+#         'PASSWORD': 'Jackson',  
+#         'HOST': '127.0.0.1',  
+#         'PORT': '5432',  
+#         }  
+# }  
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
