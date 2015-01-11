@@ -69,12 +69,34 @@ class AI:
 		self.board = self.board_instance.board
 		self.color = color
 		self.opposite_color = 'W' if self.color == 'B' else 'B'
+		self.corners = [(0,0),(7,0),(0,7),(7,7)]
 
 	def take_turn(self):
 		legal_moves = self.forecast_best_move(self.board)
-		# print('ai',legal_moves)
-		best_move = sorted(legal_moves,key=lambda x: x['score']-x['human_score'])[-1]
-		# print('best_move', best_move)
+		for x in legal_moves:
+			if x['response'] in self.corners:
+				x['score'] += (10+max(x['score']),)
+			elif 0 in x['response'] or 7 in x['response']:
+				x['score'] += (5+max(x['score']),)
+			x['agg_score'] = max(x['score'])-max(x['human_score'])
+		max_score = max([x['agg_score'] for x in legal_moves])
+		while len([x for x in legal_moves if x['agg_score'] >= max_score]) > 1:
+			best_moves = [x for x in legal_moves if x['agg_score'] >= max_score]
+			min_hs,max_hs = min([max(x['human_score']) for x in best_moves]), max([max(x['human_score']) for x in best_moves])
+			min_sc,max_sc = min([max(x['score']) for x in best_moves]), max([max(x['score']) for x in best_moves])
+			for c in best_moves:
+				if max(x['human_score']) == min_hs:
+					x['agg_score'] += 3
+				elif max(x['human_score']) == max_hs:
+					x['agg_score'] -= 3
+				if max(x['score']) == max_sc:
+					x['agg_score'] += 2
+				elif max(x['score']) == min_sc:
+					x['agg_score'] -= 1
+			max_score = max([x['agg_score'] for x in legal_moves])
+			# best_move = sorted(best_moves,key=lambda x: x['human_score'])[0]
+		best_move = sorted(legal_moves,key=lambda x: x['agg_score'])[-1]
+		print('best_move', best_move)
 		return best_move['response'] + (self.color,)
 
 	def find_legal_moves(self):
@@ -94,7 +116,6 @@ class AI:
 		hb.import_board(current_board)
 		hb.place(*_move)
 		return hb
-			
 
 	def forecast_best_move(self,current_board):
 		scenarios = []
@@ -102,18 +123,23 @@ class AI:
 			hb = AI.__hypothetical_board__(move,self.color,current_board)
 			all_humans_moves = AI(hb,self.color).find_legal_moves()
 			for human_move in sorted(all_humans_moves,key=lambda x: x['score'],reverse=True):
-				print('human',human_move)
+				# print('human',human_move)
 				new_hb = AI.__hypothetical_board__(human_move,self.opposite_color,hb.board)
 				all_ai_moves = AI(new_hb,self.color).find_legal_moves()
-				for c in all_ai_moves:
-					print(c)
-				# print('ai',all_ai_moves)
+				# for c in all_ai_moves:
+				# 	print(c)
+				# # print('ai',all_ai_moves)
 				if len(all_ai_moves) > 0:
 					best_move_in_response = sorted(all_ai_moves,key=lambda x: x['score'],reverse=True)[0]
-					scenarios.append({
-						'human_score': human_move['score'],
+					obj = [x for x in scenarios if x['response'] == move['cell']]
+					if len(obj) > 0:
+						obj[0]['score'] += (best_move_in_response['score'],) 
+						obj[0]['human_score'] += (human_move['score'],)
+					else:
+						scenarios.append({
+						'human_score': (human_move['score'],),
 						'response': move['cell'],
-						'score': best_move_in_response['score']
+						'score': (best_move_in_response['score'],)
 						})
 				else:
 					continue
@@ -124,6 +150,13 @@ class AI:
 					'response': best_last_move['cell'],
 					'score': best_last_move['score']
 					})
+		for c in sorted(scenarios,key=lambda x: x['human_score']):
+			print(c)
 		return sorted(scenarios,key=lambda x: x['human_score'],reverse=True)
 
+
+
+# g = Gameboard()
+# ai = AI(g,'W')
+# ai.take_turn()
 
