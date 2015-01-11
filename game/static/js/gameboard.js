@@ -7,6 +7,32 @@ $(document).ready(function(){
 
     $('.alerts').hide();
 
+function checkScore(board) {
+    var white = 0
+    var black = 0
+    for(var i = 0; i < board.length; i++){
+        for(var j = 0; j < board.length; j++){
+            if(board[i][j] == 'W'){ white += 1 }
+            else if (board[i][j] == 'B'){ black += 1 }
+        }
+    }
+    return [white,black]
+}
+
+function endGame(board) {
+    var score = checkScore(board)
+    var outcome
+    if(score[0] > score[1]){
+        outcome = 'win'
+    } else if(score[0] == score[1]){
+        outcome = 'tie'
+    } else {
+        outcome = 'loss'
+    }
+    $('.board').css('opacity','0.5');
+
+}
+
 function buildBoard(board,moves) {
     $('.board').empty();
     for(var i = 0; i < board.length; i++){
@@ -27,15 +53,10 @@ function buildBoard(board,moves) {
             $('#row-'+i).append(cell+'</div>')        
         }
     }
+    var score = checkScore(board)
+    var white = score[0],
+        black = score[1] 
 
-    var white = 0
-    var black = 0
-    for(var i = 0; i < board.length; i++){
-        for(var j = 0; j < board.length; j++){
-            if(board[i][j] == 'W'){ white += 1 }
-            else if (board[i][j] == 'B'){ black += 1 }
-        }
-    }
     if(black > white){
         // var styles = ['#FF4D4D','#99E699']
     } else if (white > black) {
@@ -95,7 +116,7 @@ function buildBoard(board,moves) {
                         buildBoard(data['board'],[])
                     }
                     if (data['g']) {
-                        alert(data['g'])
+                        endGame(data['board'])
                     }
                 },
                 error: function (xhr, errmsg, err) {
