@@ -10,9 +10,14 @@
 {% csrf_token %}
 <div class='container'>
    <h1>Othello</h1>
-   <div class='board'>
-   </div>
-   <hr>
+   <div class='board col-md-8'></div>
+   <div class='alerts col-md-1'>Hello</div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<hr>
+<div>
    <h3>Thanks for playing</h3>
 </div>
 {% endblock %}

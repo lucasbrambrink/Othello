@@ -5,6 +5,7 @@
 
 .cell {
     padding: 0px;
+    width: 12.5%;
     border: 1px solid black;
     height: 100%;
     display: inline;
@@ -22,4 +23,8 @@
 
 .W {
     background-color: blue;
+}
+
+.alerts {
+    display: inline;
 }

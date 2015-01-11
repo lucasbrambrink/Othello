@@ -21,10 +21,8 @@ class Gameboard:
 		self.board[4][3] = 'B'
 
 	def place(self,y,x,color):
-		# print('placing',y,x,color)
 		self.board[y][x] = color
 		for c in self.check_all_directions(y,x,color):
-			print('c',c)
 			self.board[c[0]][c[1]] = c[2]
 		return True  
 	
@@ -32,6 +30,16 @@ class Gameboard:
 		if len(self.check_all_directions(y,x,color)) == 0:
 			return False
 		return True
+
+	def find_legal_moves(self,color):
+		empty_cells = [(y,x) for y in range(self.board_size) for x in range(self.board_size) if self.board[y][x] == "O"]
+		moves = []
+		for cell in empty_cells:
+			_try_ = cell + (color,)
+			score = self.check_all_directions(*_try_)
+			if len(score) > 0:
+				moves.append({'cell': cell, 'score': len(score)})
+		return moves
 
 	def check_all_directions(self,y,x,color):
 		opposite_color = 'W' if color == 'B' else 'B'
@@ -51,7 +59,6 @@ class Gameboard:
 					break
 				else:
 					break
-		# print([y for x in coordinates for y in x])
 		return [y for x in coordinates for y in x]
 
 
@@ -65,8 +72,10 @@ class AI:
 
 	def take_turn(self):
 		legal_moves = self.forecast_best_move(self.board)
-		best_move = sorted(legal_moves,key=lambda x: sum([y for y in x['score']]))[-1]
-		return best_move['cell'] + (self.color,)
+		# print('ai',legal_moves)
+		best_move = sorted(legal_moves,key=lambda x: x['score']-x['human_score'])[-1]
+		# print('best_move', best_move)
+		return best_move['response'] + (self.color,)
 
 	def find_legal_moves(self):
 		empty_cells = [(y,x) for y in range(len(self.board)) for x in range(len(self.board[0])) if self.board[y][x] == "O"]
@@ -75,7 +84,7 @@ class AI:
 			_try_ = cell + (self.color,)
 			score = self.board_instance.check_all_directions(*_try_)
 			if len(score) > 0:
-				moves.append({'cell': cell, 'score': (len(score),)})
+				moves.append({'cell': cell, 'score': len(score)})
 		return moves
 
 	@staticmethod
@@ -88,39 +97,41 @@ class AI:
 			
 
 	def forecast_best_move(self,current_board):
-		better_moves = []
+		scenarios = []
 		for move in self.find_legal_moves():
 			hb = AI.__hypothetical_board__(move,self.color,current_board)
 			all_humans_moves = AI(hb,self.color).find_legal_moves()
 			# print('human',all_humans_moves)
-			for human_move in all_humans_moves:
+			for human_move in sorted(all_humans_moves,key=lambda x: x['score'],reverse=True):
 				new_hb = AI.__hypothetical_board__(human_move,self.opposite_color,hb.board)
 				all_ai_moves = AI(new_hb,self.color).find_legal_moves()
 				# print('ai',all_ai_moves)
-				for ai_move in all_ai_moves:
-					# if ai_move['score'] > move['score']:
-					# print(ai_move)
-					obj = [x for x in better_moves if x['cell'] == move['cell']]
-					if len(obj) > 0:
-						obj[-1]['score'] += ai_move['score']
-					else:
-						better_moves.append({'cell': move['cell'], 'score': ai_move['score']})
-		return better_moves
+				if len(all_ai_moves) > 0:
+					best_move_in_response = sorted(all_ai_moves,key=lambda x: x['score'],reverse=True)[0]
+					scenarios.append({
+						'human_score': human_move['score'],
+						'response': move['cell'],
+						'score': best_move_in_response['score']
+						})
+				else:
+					continue
+		return sorted(scenarios,key=lambda x: x['human_score'],reverse=True)
 
 
 
 g = Gameboard()
-# g.place(3,2,'B')
-# g.place(2,2,'W')
-ai = AI(g,'W')
-# print(ai.forecast_best_move(g.board))
-ai_move = ai.take_turn()
-print(ai_move)
-print('board')
-g._print()
-new_g = Gameboard()
-new_g.import_board(g.board)
-new_g.place(*ai_move)
-new_g._print()
-# print(ai.take_turn())
+# # g.place(3,2,'B')
+# # g.place(2,2,'W')
+# ai = AI(g,'W')
+# # print(ai.forecast_best_move(g.board))
+# ai_move = ai.take_turn()
+# print(ai_move)
+# print('board')
+# g._print()
+# new_g = Gameboard()
+# new_g.import_board(g.board)
+# new_g.place(*ai_move)
+# new_g._print()
+# # print(ai.take_turn())
+print(g.find_legal_moves('W'))
 

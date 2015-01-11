@@ -6,11 +6,12 @@ color = 'W'
 $(document).ready(function(){
 
 function buildBoard(board) {
+    $('.board').empty();
     for(var i = 0; i < board.length; i++){
         var row = "<div class='row' id='row-"+ i +"'></div>"
         $('.board').append(row)
         for(var j = 0; j < board[0].length; j++){
-            var cell = "<div class='cell col-xs-1' id='row-" + i + ",col-"+ j +"'>"
+            var cell = "<div class='cell col-md-1' id='row-" + i + ",col-"+ j +"'>"
             if(board[i][j] == "W" || board[i][j] == "B"){
                 var piece = "<div class='piece " + board[i][j] + "'></div>"
                 cell += piece
@@ -53,13 +54,19 @@ function buildBoard(board) {
                 },
                 success: function (data) {
                     if (data['e']) {
-                        alert(data['e'])
+                        $('.alerts').empty();
+                        $('.alerts').append("<h1 id='illegal'>"+data['e']+"</h1>")
+                        $('#illegal').delay(800).fadeOut(400);
                     }
-                    else {
+                    if (data['first_board']) {
+                        buildBoard(data['first_board'])
+                        setTimeout(function() { buildBoard(data['board']); board = data['board']; }, 1500 );
+                    } else if (data['board']) {
                         board = data['board']
-                        $('.board').empty();
-                        buildBoard(board)
-                        // if (color == 'W') { color = 'B'} else { color = 'W'}
+                        buildBoard(data['board'])
+                    }
+                    if (data['g']) {
+                        alert(data['g'])
                     }
                 },
                 error: function (xhr, errmsg, err) {
