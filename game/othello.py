@@ -123,6 +123,10 @@ class AI:
 			hb = AI.__hypothetical_board__(move,self.color,current_board)
 			all_humans_moves = AI(hb,self.color).find_legal_moves()
 			for human_move in sorted(all_humans_moves,key=lambda x: x['score'],reverse=True):
+				if human_move['cell'] in self.corners:
+					human_move['score'] += 10+human_move['score']
+				if 0 in human_move['cell'] or 7 in human_move['cell']:
+					human_move['score'] += 5+human_move['score']
 				# print('human',human_move)
 				new_hb = AI.__hypothetical_board__(human_move,self.opposite_color,hb.board)
 				all_ai_moves = AI(new_hb,self.color).find_legal_moves()

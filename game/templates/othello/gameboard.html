@@ -10,8 +10,22 @@
 {% csrf_token %}
 <div class='container'>
    <h1>Othello</h1>
-   <div class='board col-md-8'></div>
-   <div class='alerts col-md-1'></div>
+   <div class='board col-md-7'></div>
+   <div class='sidebar col-md-4'>
+      <div class='score'>
+         <table>
+               <tr id='score_white' class='col-md-8'></tr>
+               <tr id='score_black' class='col-md-8'></tr>
+         </table>
+      </div>
+      <div>
+         <button id='highlight_moves' class="btn btn-large col-md-8 btn-success"><h3>Show Moves</h3></button>
+      </div>
+      <div class='alerts'>
+         <h1 id='illegal'>You cannot move there</h1>
+      </div>
+      <div class='menu'></div>
+   </div>
 </div>
 {% endblock %}
 

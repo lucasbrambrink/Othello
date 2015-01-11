@@ -1,5 +1,5 @@
 .row {
-    height: 90px;
+    height: 75px;
     width: 100%;
 }
 
@@ -25,6 +25,44 @@
     background-color: blue;
 }
 
-.alerts {
+.sidebar {
     display: inline;
+}
+
+#score_white {
+    border-radius: 10px;
+    border: 1px solid black;
+}
+
+#score_black {
+    border-radius: 10px;
+    border: 1px solid black;
+}
+
+.alerts {
+    margin-top: 2em;
+    border: 1px solid red;
+    border-radius: 10px;
+    padding-left: 2em;
+}
+
+.table td {
+   text-align: center;  
+}
+
+h1,h2,h3 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#highlight_moves {
+    margin-top: 1em;
+}
+
+.possible {
+    height: 100%;
+    width: 100%;
+    border: 2px solid green;
+    border-radius: 100%;
+
 }

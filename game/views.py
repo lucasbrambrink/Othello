@@ -26,6 +26,12 @@ class BoardControl(View):
 		board = json.loads(request.POST['board'])
 		return Controller(move,board).__return__()
 	
+class ShowMoves(View):
+
+	def post(self,request):
+		g = Gameboard()
+		g.import_board(json.loads(request.POST['board']))
+		return JsonResponse({'moves': g.find_legal_moves('W'), 'board': g.board})
 
 class Controller:
 
