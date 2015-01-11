@@ -46,16 +46,14 @@ class Controller:
 		self.g.place(*self.move)
 		self.g._print()
 		human_move_board = copy.deepcopy(self.g.board)
-		if len(self.g.find_legal_moves(self.color)) == 0:
-			return JsonResponse({'g': 'Game Over', 'board': self.g.board})
 		ai_color = 'W' if self.color == 'B' else 'B'
+		if len(self.g.find_legal_moves(ai_color)) == 0:
+			return JsonResponse({'g': 'Game Over', 'board': self.g.board})
 		ai = AI(self.g,ai_color)
 		ai_move = ai.take_turn()
 		self.g.place(*ai_move)
 		if len(self.g.find_legal_moves(self.color)) == 0:
 			return JsonResponse({'g': 'Game Over', 'board': self.g.board})
-		print(human_move_board)
-		print(self.g.board)
 		return JsonResponse({'first_board': human_move_board, 'board': self.g.board})
 
 

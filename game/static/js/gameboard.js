@@ -33,10 +33,6 @@ function buildBoard(board) {
             }
         },'json');
 
-
-
-
-    console.log(token)
     $('.board').on('click','.cell', function(){
         var id = $(this).attr('id').split(',');
         var row = id[0].split('-')[1];
@@ -60,7 +56,7 @@ function buildBoard(board) {
                     }
                     if (data['first_board']) {
                         buildBoard(data['first_board'])
-                        setTimeout(function() { buildBoard(data['board']); board = data['board']; }, 1500 );
+                        setTimeout(function() { buildBoard(data['board']); board = data['board']; }, 1000 );
                     } else if (data['board']) {
                         board = data['board']
                         buildBoard(data['board'])

@@ -101,10 +101,12 @@ class AI:
 		for move in self.find_legal_moves():
 			hb = AI.__hypothetical_board__(move,self.color,current_board)
 			all_humans_moves = AI(hb,self.color).find_legal_moves()
-			# print('human',all_humans_moves)
 			for human_move in sorted(all_humans_moves,key=lambda x: x['score'],reverse=True):
+				print('human',human_move)
 				new_hb = AI.__hypothetical_board__(human_move,self.opposite_color,hb.board)
 				all_ai_moves = AI(new_hb,self.color).find_legal_moves()
+				for c in all_ai_moves:
+					print(c)
 				# print('ai',all_ai_moves)
 				if len(all_ai_moves) > 0:
 					best_move_in_response = sorted(all_ai_moves,key=lambda x: x['score'],reverse=True)[0]
@@ -115,6 +117,13 @@ class AI:
 						})
 				else:
 					continue
+		if len(scenarios) == 0:
+			best_last_move = sorted(self.find_legal_moves(), lambda x: x['score'],reverse=True)[0]
+			scenarios.append({
+					'human_score': 0,
+					'response': best_last_move['cell'],
+					'score': best_last_move['score']
+					})
 		return sorted(scenarios,key=lambda x: x['human_score'],reverse=True)
 
 
