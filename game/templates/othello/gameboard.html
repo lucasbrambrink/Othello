@@ -14,8 +14,8 @@
    <div class='sidebar col-md-4'>
       <div class='score'>
          <table>
-               <tr id='score_white' class='col-md-8'></tr>
-               <tr id='score_black' class='col-md-8'></tr>
+               <tr id='score_white' class='col-md-8 scores'></tr>
+               <tr id='score_black' class='col-md-8 scores'></tr>
          </table>
       </div>
       <div>
@@ -24,10 +24,25 @@
       <div class='alerts'>
          <h1 id='illegal'>You cannot move there</h1>
       </div>
+      <div class='game_over'>
+         <div id='end_contents'>
+            <h1>Game Over</h1>
+            <div id='final_result'></div>
+            <div id='final_score'></div>
+               <table class='final_score_table'>
+                  <tr id='final_score_row' class='col-md-12 final_score'></tr>
+               </table>
+            <div class='score_buttons'>
+               <button id='save' class="btn btn-success btn-lg end_button">Save</button>
+               <button id='okay' class="btn btn-danger btn-lg end_button">Play Again</button>
+            </div>
+         </div>
+      </div>
+
+      <div class='keep_score'></div>
       <div class='reset'>
          <button id='reset' class="btn btn-danger btn-lg">Reset</button>
       </div>
-      <div class='menu'></div>
    </div>
 </div>
 {% endblock %}

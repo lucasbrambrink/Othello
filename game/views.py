@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.views.generic.base import View
 from game.othello import *
 from django.http import JsonResponse
+from game.models import Game
 import json
 import copy
 # Create your views here.
@@ -26,6 +27,15 @@ class BoardControl(View):
 		board = json.loads(request.POST['board'])
 		return Controller(move,board).__return__()
 	
+class SaveControl(View):
+
+	def post(self,request):
+		score = json.loads(request.POST['score'])
+		name = json.loads(request.POST['name'])
+		Game.objects.save(name=name,score=score)
+		return JsonResponse({'highscores': Game.objects.all() })
+
+
 class ShowMoves(View):
 
 	def post(self,request):
@@ -62,6 +72,5 @@ class Controller:
 		if len(self.g.find_legal_moves(self.color)) == 0:
 			return JsonResponse({'g': 'Game Over', 'board': self.g.board})
 		return JsonResponse({'first_board': human_move_board, 'board': self.g.board})
-
 
 

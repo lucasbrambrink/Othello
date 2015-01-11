@@ -6,6 +6,7 @@ color = 'W'
 $(document).ready(function(){
 
     $('.alerts').hide();
+    $('.game_over').hide();
 
 function checkScore(board) {
     var white = 0
@@ -23,13 +24,19 @@ function endGame(board) {
     var score = checkScore(board)
     var outcome
     if(score[0] > score[1]){
-        outcome = 'win'
+        outcome = 'You won'
     } else if(score[0] == score[1]){
-        outcome = 'tie'
+        outcome = 'Tie'
     } else {
-        outcome = 'loss'
+        outcome = 'You lost'
     }
-    $('.board').css('opacity','0.5');
+    $('#final_result').append("<h2> :: "+outcome+" :: </h2>")
+    $('.board').css('opacity','0.3');
+    $('#final_score_row').empty()
+        .append("<td style='width:4em;'><h4>Blue</h4></td><td style='width:3em;'><h3><strong>"+score[0]+"</strong></h3></td>")
+        .append("<td><h3>||</h3></td>")
+        .append("<td style='width:5em;'><h4>Black</h4></td><td style='width:3em;'><h3><strong>"+score[1]+"</strong></h3></td>")
+    $('.game_over').fadeIn(600);
 
 }
 
@@ -156,6 +163,7 @@ function buildBoard(board,moves) {
                 success: function (data) {
                     board = data['board']
                     buildBoard(board,[])
+                    $('.game_over').hide();
                 },
                 error: function (xhr, errmsg, err) {
                     alert("error");

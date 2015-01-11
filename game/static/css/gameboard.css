@@ -30,12 +30,7 @@
     height: 600px;
 }
 
-#score_white {
-    border-radius: 10px;
-    border: 1px solid black;
-}
-
-#score_black {
+.scores {
     border-radius: 10px;
     border: 1px solid black;
 }
@@ -73,4 +68,40 @@ h1,h2,h3 {
     bottom: 0;
     left: 1em;
     display: inline;
+}
+
+.game_over {
+    text-align: center;
+    position: absolute;
+    left: -39em;
+    top: 150px;
+    display: inline;
+    height: 300px;
+    width: 400px;
+    padding: 2em;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: white;
+    opacity: 0.8;
+}
+
+.final_score_table {
+    margin: auto;
+}
+
+.score_buttons {
+    position: absolute;
+    bottom: 3em;
+}
+
+#save {
+    margin-left: 3em;
+}
+
+#okay {
+    margin-left: 2.5em;
+}
+
+#end_contents {
+    opacity: 1.0;
 }
