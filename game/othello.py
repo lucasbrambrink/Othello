@@ -127,7 +127,7 @@ class AI:
 					human_move['score'] += 10+human_move['score']
 				if 0 in human_move['cell'] or 7 in human_move['cell']:
 					human_move['score'] += 5+human_move['score']
-				# print('human',human_move)
+				# print('human',human_move)	
 				new_hb = AI.__hypothetical_board__(human_move,self.opposite_color,hb.board)
 				all_ai_moves = AI(new_hb,self.color).find_legal_moves()
 				# for c in all_ai_moves:

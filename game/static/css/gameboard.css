@@ -27,6 +27,7 @@
 
 .sidebar {
     display: inline;
+    height: 600px;
 }
 
 #score_white {
@@ -40,7 +41,7 @@
 }
 
 .alerts {
-    margin-top: 2em;
+    margin-top: 10em;
     border: 1px solid red;
     border-radius: 10px;
     padding-left: 2em;
@@ -65,4 +66,11 @@ h1,h2,h3 {
     border: 2px solid green;
     border-radius: 100%;
 
+}
+
+.reset {
+    position: absolute;
+    bottom: 0;
+    left: 1em;
+    display: inline;
 }

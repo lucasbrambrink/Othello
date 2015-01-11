@@ -37,13 +37,13 @@ function buildBoard(board,moves) {
         }
     }
     if(black > white){
-        var styles = ['#FF4D4D','#99E699']
+        // var styles = ['#FF4D4D','#99E699']
     } else if (white > black) {
-        var styles = ['#99E699','#FF4D4D']
+        // var styles = ['#99E699','#FF4D4D']
     } else {
-        var styles = ['#80B2FF','#80B2FF']
+        // var styles = ['#80B2FF','#80B2FF']
     }
-
+    var styles = ['#80B2FF','#80B2FF']
     $('#score_white').empty()
         .append("<td style='width:10em;'><h2>Blue</h2></td><td style='width:5em;'><h2><strong>"+white+"</strong></h2></td>")
         .css('background-color',styles[0])
@@ -68,6 +68,10 @@ function buildBoard(board,moves) {
         var id = $(this).attr('id').split(',');
         var row = id[0].split('-')[1];
         var col = id[1].split('-')[1];
+
+        if(board[row][col]!= 'O'){
+            $('.alerts').show().delay(800).fadeOut(400);
+        } else {
 
         var link = "/game/place/";
 
@@ -98,6 +102,7 @@ function buildBoard(board,moves) {
                     alert("error");
                 }
             },'json');
+        }
     });
 
     $('#highlight_moves').on('click', function(){
@@ -120,6 +125,22 @@ function buildBoard(board,moves) {
                     alert("error");
                 }
             },'json');
+    })
+
+    $("#reset").on('click', function(){
+        
+        $.ajax({
+                url: 'game/board/',
+                type: "GET",
+                success: function (data) {
+                    board = data['board']
+                    buildBoard(board,[])
+                },
+                error: function (xhr, errmsg, err) {
+                    alert("error");
+                }
+            },'json');
+
     })
 });
 
