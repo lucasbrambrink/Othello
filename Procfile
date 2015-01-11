@@ -1,1 +1,1 @@
-web: gunicorn Othello.wsgi --log-file -
+web: gunicorn Othello.wsgi --log-file - 
