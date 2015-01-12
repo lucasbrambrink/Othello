@@ -1,5 +1,8 @@
 # Othello
-Strategic board game
+the Strategic board game
 
-live at:
+# Read the Rules and History here!
+https://en.wikipedia.org/wiki/Reversi
+
+# live at:
 https://dry-thicket-4477.herokuapp.com/
