@@ -34,9 +34,9 @@ class SaveControl(View):
 
 	def post(self,request):
 		score = json.loads(request.POST['score'])
-		print(score)
 		name = request.POST['name'].split("=")[1]
-		print(name)
+		if len(name) > 8:
+			name = name[:8]
 		user = Users.objects.filter(name=name)
 		if len(user) > 0:
 			user = user[0]
