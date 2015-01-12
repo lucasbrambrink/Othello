@@ -190,33 +190,37 @@ $(document).ready(function(){
         $('#name_form').fadeIn(300);
         var score = checkScore(board)
         if(score[0] > score[1]){
-            var points = [1,0,0]
+            var points = {'wins': 1, 'losses': 0,'ties': 0}
         } else if (score[0] < score[1]){
-            var points = [0,1,0]
-        } else { var points = [0,0,1] }
+            var points = {'wins': 0, 'losses': 1,'ties': 0}
+        } else { 
+            var points = {'wins': 0, 'losses': 0,'ties': 1} 
+        }
 
         $("#form_user_name").on('submit', function(e){
-            e.preventDefault();
-        
-            $.ajax({
-                    url: '/game/save/',
-                    type: "POST",
-                    data: {
-                        csrfmiddlewaretoken: token,
-                        name: $(this).serialize(),
-                        score: JSON.stringify(points)
-                    },
-                    success: function (data) {
-                        board = data['board']
-                        buildBoard(board,[])
-                        buildScoreBoard(data['highscores'])
-                        $('.game_over').hide();
-                        $('.board').css('opacity','1')
-                    },
-                    error: function (xhr, errmsg, err) {
-                        alert("error");
-                    }
-                },'json');
+            if($(this).serialize().split("=")[1].length > 0){
+
+                $.ajax({
+                        url: '/game/save/',
+                        type: "POST",
+                        data: {
+                            csrfmiddlewaretoken: token,
+                            name: $(this).serialize(),
+                            score: JSON.stringify(points)
+                        },
+                        success: function (data) {
+                            board = data['board']
+                            buildBoard(board,[])
+                            buildScoreBoard(data['highscores'])
+                            $('.game_over').hide();
+                            $('.board').css('opacity','1')
+                        },
+                        error: function (xhr, errmsg, err) {
+                            alert("error");
+                        }
+                    },'json'
+                );
+            }
         })
 
     })

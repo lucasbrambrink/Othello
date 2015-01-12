@@ -34,16 +34,18 @@ class SaveControl(View):
 
 	def post(self,request):
 		score = json.loads(request.POST['score'])
+		print(score)
 		name = request.POST['name'].split("=")[1]
+		print(name)
 		user = Users.objects.filter(name=name)
 		if len(user) > 0:
 			user = user[0]
-			user.wins += score[0]
-			user.losses += score[1]
-			user.ties += score[2]
+			user.wins += score['wins']
+			user.losses += score['losses']
+			user.ties += score['ties']
 			user.save()
 		else:
-			Users.objects.create(name=name, wins=score[0], losses=score[1], ties=score[2])
+			Users.objects.create(name=name,**score)
 		return JsonResponse({'board': Gameboard().board, 'highscores': [{'name': x.name, 'wins': x.wins, 'losses': x.losses, 'ties': x.ties} for x in Users.objects.all()[:5]] })
 
 
